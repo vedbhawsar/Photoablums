@@ -6,7 +6,7 @@ var model 		= require('./../lib/model/model-users');
 router.get('/', function(req, res) {
   model.getAllUsers(function(err, obj){
   	if(err){
-  		res.status(500).send({error: 'An unknown server error has occurred!'});
+  		res.status(500).send({error: 'An unknown server error has occurred!'+err});
   	} else {
   		res.send(obj);
   	}
