@@ -8,7 +8,13 @@ var debug = require('debug')('photoalbums');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var photos = require('./routes/photos');
-var albums = require('./routes/albums');
+var albums = require('./routes/albums')
+//#Ved Added
+var appusers = require('./routes/appusers');
+var pollquestions = require('./routes/pollquestions');
+var userresponse = require('./routes/userresponse');
+//#Ved Added END
+
 var globals = require('./lib/globals');
 var mysql       = require('mysql');
 var app = express();
@@ -29,6 +35,12 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/photos', photos);
 app.use('/albums', albums);
+
+//Ved Added
+app.use('/appusers', appusers);
+app.use('/pollquestions', pollquestions);
+app.use('/userresponse', userresponse);
+//Ved Added END
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -69,7 +81,7 @@ var server = app.listen(app.get('port'), function() {
     var connection  = mysql.createConnection(globals.database());
     connection.connect(function(err) {
         if(err){
-            console.log('error connecting to database:');
+            console.log('error connecting to database:'+err);
         } else {
             console.log('connected to database!');
         }
