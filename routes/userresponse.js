@@ -15,7 +15,7 @@ if(req.param('userid') && req.param('pollid') && req.param('responseid')){
 		if(err){
 			res.status(500).send({error: 'An unknown server error has occurred!'+err});
 		} else {
-			res.send(obj);
+			res.status(200).send(obj);
 		}
   })
   }
@@ -32,7 +32,7 @@ router.post('/archive', function(req, res) {
 			if(err){
 				res.status(500).send({error: 'An unknown server error has occurred!'+err});
 			} else {
-				res.send(obj);
+				res.status(200).send(obj);
 			}
 		})
     }
