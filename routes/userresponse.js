@@ -15,7 +15,8 @@ if(req.param('userid') && req.param('pollid') && req.param('responseid')){
 		if(err){
 			res.status(500).send({error: 'An unknown server error has occurred!'+err});
 		} else {
-			res.status(200).send(obj);
+			res.writeHead(200,{'Content-Type':'application/json'});		
+			res.send(obj);
 		}
   })
   }
@@ -32,7 +33,8 @@ router.post('/archive', function(req, res) {
 			if(err){
 				res.status(500).send({error: 'An unknown server error has occurred!'+err});
 			} else {
-				res.status(200).send(obj);
+				res.writeHead(200,{'Content-Type':'application/json'});		
+				res.send(obj);
 			}
 		})
     }
@@ -47,6 +49,7 @@ router.get('/poll/:pollid', function(req, res) {
 		if(err){
 	  		res.status(500).send({error: 'An unknown server error has occurred!'});
 	  	} else {
+			res.writeHead(200,{'Content-Type':'application/json'});		
 	  		res.send(obj);
 	  	}
 	});
@@ -68,6 +71,7 @@ router.post('/register', function(req, res) {
 				if(err){
 					res.status(400).send({error: 'Unable to register'});
 				} else {
+				res.writeHead(200,{'Content-Type':'application/json'});		
 					res.send(obj);
 				}
 			});

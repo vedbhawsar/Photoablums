@@ -8,6 +8,7 @@ router.get('/', function(req, res) {
   	if(err){
   		res.status(500).send({error: 'An unknown server error has occurred!'+err});
   	} else {
+		res.writeHead(200,{'Content-Type':'application/json'});		
   		res.send(obj);
   	}
   })
@@ -23,6 +24,7 @@ router.get('/user/:user', function(req, res) {
 		if(err){
 	  		res.status(500).send({error: 'An unknown server error has occurred!'});
 	  	} else {
+			res.writeHead(200,{'Content-Type':'application/json'});		
 	  		res.send(obj);
 	  	}
 	});
@@ -40,6 +42,7 @@ router.post('/login', function(req, res) {
 			if(err){
 				res.status(400).send({error: 'Invalid login'});
 			} else {
+				res.writeHead(200,{'Content-Type':'application/json'});		
 				res.send(obj);
 			}
 		});		

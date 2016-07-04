@@ -17,6 +17,7 @@ router.get('/:page', function(req, res) {
   	if(err){
   		res.status(500).send({error: 'An unknown server error has occurred!'+err});
   	} else {
+		res.writeHead(200,{'Content-Type':'application/json'});		
   		res.send(obj);
   	}
   })
@@ -31,6 +32,7 @@ router.get('/archives/:userid/:page', function(req, res) {
   	if(err){
   		res.status(500).send({error: 'An unknown server error has occurred!'+err});
   	} else {
+		res.writeHead(200,{'Content-Type':'application/json'});		
   		res.send(obj);
   	}
   })
@@ -45,6 +47,7 @@ router.get('/poll/:pollid', function(req, res) {
 		if(err){
 	  		res.status(500).send({error: 'An unknown server error has occurred!'});
 	  	} else {
+			res.writeHead(200,{'Content-Type':'application/json'});		
 	  		res.send(obj);
 	  	}
 	});
