@@ -21,6 +21,22 @@ if(req.param('userid') && req.param('pollid') && req.param('responseid')){
   }
 });
 
+router.post('/archive', function(req, res) {
+	if(req.param('userid') && req.param('pollid')){
+		var params= {
+			userid: req.param('userid'),	
+			pollid: req.param('pollid')			
+		}	
+		
+		model.sendToArchive(params,function(err, obj){
+			if(err){
+				res.status(500).send({error: 'An unknown server error has occurred!'+err});
+			} else {
+				res.send(obj);
+			}
+		})
+    }
+});
 
 /* GET albums by user */
 router.get('/poll/:pollid', function(req, res) {

@@ -2,6 +2,11 @@ var express 	= require('express');
 var router 		= express.Router();
 var model 		= require('./../lib/model/model-pollquestions');
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 /* GET users listing. */
 router.get('/:page', function(req, res) {
 	var params= {
@@ -16,7 +21,20 @@ router.get('/:page', function(req, res) {
   	}
   })
 });
-
+router.get('/archives/:userid/:page', function(req, res) {
+	var params= {
+		userid: (Number(req.param('userid'))),
+		offset: (Number(req.param('page'))-1)*10,
+		count:10
+	}
+  model.getArchivePolls(params,function(err, obj){
+  	if(err){
+  		res.status(500).send({error: 'An unknown server error has occurred!'+err});
+  	} else {
+  		res.send(obj);
+  	}
+  })
+});
 
 /* GET albums by user */
 router.get('/poll/:pollid', function(req, res) {
