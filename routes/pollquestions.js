@@ -38,12 +38,45 @@ router.get('/archives/:userid/:page', function(req, res) {
   })
 });
 
-/* GET albums by user */
+
+
 router.get('/poll/:pollid', function(req, res) {
-	var params= {
-		pollid: req.param('pollid')
-	}
+	var pollid = req.params.pollid;
+    
+	params= {
+		pollid: pollid
+	}	
 	model.getPoll(params, function(err, obj){
+		if(err){
+	  		res.status(500).send({error: 'An unknown server error has occurred! ved'+err});
+	  	} else {
+			//res.writeHead(200,{'Content-Type':'application/json'});		
+				res.status(200).send(obj);
+	  	}
+	});
+});
+
+router.get('/nextpoll/:pollid', function(req, res) {
+	var params= {
+		pollid: req.param('pollid'),
+		category: req.param('category')
+	}
+	model.getNextPoll(params, function(err, obj){
+		if(err){
+	  		res.status(500).send({error: 'An unknown server error has occurred!'});
+	  	} else {
+			//res.writeHead(200,{'Content-Type':'application/json'});		
+				res.status(200).send(obj);
+	  	}
+	});
+});
+
+router.get('/prevpoll/:pollid', function(req, res) {
+	var params= {
+		pollid: req.param('pollid'),
+		category: req.param('category')
+	}
+	model.getPrevPoll(params, function(err, obj){
 		if(err){
 	  		res.status(500).send({error: 'An unknown server error has occurred!'});
 	  	} else {
