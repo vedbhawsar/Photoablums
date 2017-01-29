@@ -84,9 +84,9 @@ router.post('/register', function(req, res) {
 				androidid: req.param('androidid'),
 			};
 
-			model.createUser0(params, function(err, obj){
+			model.createUser(params, function(err, obj){
 				if(err){
-					res.status(400).send({error: 'Unable to register'});
+					res.status(400).send({error: err});
 				} else {
 					//res.writeHead(200,{'Content-Type':'application/json'});		
 					res.status(200).send(obj);	
