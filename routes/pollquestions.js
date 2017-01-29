@@ -42,11 +42,13 @@ router.get('/archives/:userid/:page', function(req, res) {
 
 router.get('/poll/:pollid', function(req, res) {
 	var pollid = req.params.pollid;
-    
+    var userid = req.param('userid');
 	params= {
-		pollid: pollid
+		pollid: pollid,
+		userid: userid
 	}	
-	model.getPoll(params, function(err, obj){
+	
+	model.getPollNumber0(params, function(err, obj){
 		if(err){
 	  		res.status(500).send({error: 'An unknown server error has occurred! ved'+err});
 	  	} else {
@@ -59,7 +61,8 @@ router.get('/poll/:pollid', function(req, res) {
 router.get('/nextpoll/:pollid', function(req, res) {
 	var params= {
 		pollid: req.param('pollid'),
-		category: req.param('category')
+		category: req.param('category'),
+		userid: req.param('userid')
 	}
 	model.getNextPoll(params, function(err, obj){
 		if(err){
@@ -74,7 +77,8 @@ router.get('/nextpoll/:pollid', function(req, res) {
 router.get('/prevpoll/:pollid', function(req, res) {
 	var params= {
 		pollid: req.param('pollid'),
-		category: req.param('category')
+		category: req.param('category'),
+		userid: req.param('userid')
 	}
 	model.getPrevPoll(params, function(err, obj){
 		if(err){
@@ -87,28 +91,57 @@ router.get('/prevpoll/:pollid', function(req, res) {
 });
 
 /* POST user registration. */
-router.post('/register', function(req, res) {
-	if(req.param('username') && req.param('password') && req.param('email')){
-		var email = unescape(req.param('email'));
-		var emailMatch = email.match(/\S+@\S+\.\S+/);
-		if (emailMatch !== null) {
+router.post('/addquestion', function(req, res) {
+	if(req.param('question') && req.param('category') && req.param('startdate')&& req.param('enddate')&& req.param('issponsered')){
+		var question = unescape(req.param('question'));		
+		if (question !== null) {
 			var params = {
-				username: req.param('username').toLowerCase(),
-				password: req.param('password'),
-				email: req.param('email').toLowerCase()
+				question: req.param('question'),
+				category: req.param('category'),
+				startdate: req.param('startdate'),
+				enddate: req.param('enddate'),
+				sponsered: req.param('issponsered'),
+				deleted:false,
+				CreatedDate:new Date(),
+				CreatedBy:'Admin'
 			};
 
-			model.createUser(params, function(err, obj){
+			model.addQuestion(params, function(err, obj){
 				if(err){
-					res.status(400).send({error: 'Unable to register'});
+					res.status(400).send({error: 'Unable to add question. error: '+err});
 				} else {
 					//res.writeHead(200,{'Content-Type':'application/json'});		
 					res.status(200).send(obj);
 				}
 			});
 		} else {
-			res.status(400).send({error: 'Invalid email'});
+			res.status(400).send({error: 'Invalid Question'});
 		}
+	} else {
+		res.status(400).send({error: 'Missing required field'});
+	}
+});
+/* POST user registration. */
+router.post('/addoption', function(req, res) {
+	if(req.param('pollid') && req.param('sequenceno') && req.param('optiontext')){
+		
+			var params = {
+				PollID: req.param('pollid'),
+				SequenceNo: req.param('sequenceno'),
+				OptionText: req.param('optiontext'),
+				CreatedDate:new Date(),
+				CreatedBy:'Admin'
+			};
+
+			model.addOptions(params, function(err, obj){
+				if(err){
+					res.status(400).send({error: 'Unable to add option.'+err});
+				} else {
+					//res.writeHead(200,{'Content-Type':'application/json'});		
+					res.status(200).send(obj);
+				}
+			});
+		
 	} else {
 		res.status(400).send({error: 'Missing required field'});
 	}
